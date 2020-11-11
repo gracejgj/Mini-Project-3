@@ -1,15 +1,19 @@
 require 'csv'
 
-@accounts = []
-
 class AtmFunction
-  def log_in(user)
-    table = CSV.parse(File.read('user.csv'), { headers: true })
-
-    user.each do |user|
-      if user.uname == uname && user.pwd == pwd
-        puts "Login Successful!"
-        ATMSystem.main_menu
+  def log_in(uname, pass)
+    login_passed = false
+    CSV.foreach('user.csv', headers: true).find do |row|
+      if login_passed = row['username'] == uname && row['pass'] == pass
+        puts "logged in"
+        login_passed = true
+        main = ATMSystem.new
+        main.main_menu
+      else
+        puts "invalid. try again"
+        login_passed == false
+        main = ATMSystem.new
+        main.log_menu
       end
     end
   end
@@ -20,11 +24,19 @@ class AtmFunction
     end
   end
 
-  def update_pass(user, upd)
-    table = CSV.table('user.csv', { headers: true })
+  def with_draw(amount)
 
-    table.delete_if do |row|
-      row[:uname] == user
+   # TODO: check that amount is valid, else error
+   balance -= amount.to_f
+   # TODO: check if sufficient funds available
+  end
+
+  def update_pass(user, upd)
+    table = CSV.table('user.csv', headers: true)
+
+    table.delete_if do |uname, pwd|
+      row[0] == user
+      row[1] == user
     end
 
     File.open('user.csv', 'w') do |f|
@@ -35,5 +47,4 @@ class AtmFunction
       csv << upd
     end
   end
-
 end
