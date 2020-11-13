@@ -18,33 +18,43 @@ class AtmFunction
     end
   end
 
-  def save_deposit(dep)
-    CSV.open('account.csv', 'a+', { headers: true } ) do |csv|
-      csv << dep
+  def save_deposit(deposit)
+    CSV.open('user.csv', 'a+', { headers: true } ) do |csv|
+      csv << deposit
+
     end
   end
 
   def with_draw(amount)
+    main = ATMSystem.new
 
-   # TODO: check that amount is valid, else error
-   balance -= amount.to_f
-   # TODO: check if sufficient funds available
+    CSV.open('user.csv', 'wb', headers: true) do |csv_out| #reading
+      CSV.foreach('user.csv') do |row| #writng
+        balance = row[2]
+        if amount <= balance
+          new_bal = balance - amount
+          puts "new account balance is RM#{new_bal}"
+        else
+          puts "Insufficient amount. exiting.."
+          main.main_menu
+        end
+      end
+    end
   end
 
-  def update_pass(user, upd)
-    table = CSV.table('user.csv', headers: true)
+  def update_pass(user, new_pass)
+    table = CSV.read('user.csv', headers: true )
 
-    table.delete_if do |uname, pwd|
-      row[0] == user
-      row[1] == user
+    table.delete_if do |row|
+      row[:pass] == new_pass
     end
 
     File.open('user.csv', 'w') do |f|
       f.write(table.to_csv)
     end
 
-    CSV.open('user.csv', 'a+', { headers: true }) do |csv|
-      csv << upd
+    CSV.open('user.csv', 'w+', headers: true) do |csv|
+      csv << new_pass
     end
   end
 end

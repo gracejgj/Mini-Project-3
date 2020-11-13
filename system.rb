@@ -7,13 +7,12 @@ class ATMSystem
     puts "Welcome to ATM System"
     puts "1 - Login"
     puts "2 - Exit"
-
     input = gets.chomp
 
     case input
       when '1'
         signin
-      when '2'
+      when '4'
         exiting
       else
         puts "Invalid option. Please try again"
@@ -63,8 +62,7 @@ class ATMSystem
     puts "Enter the amount of deposit: "
     deposit = gets.chomp
 
-    dep = [deposit]
-    function.save_deposit(dep)
+    function.save_deposit(deposit)
     puts "You have deposited RM#{deposit} into your account."
   end
 
@@ -74,20 +72,18 @@ class ATMSystem
     amount = gets.chomp
 
     function.with_draw(amount)
-    puts "You have withdraw RM#{amount} from your account"
   end
 
   def update
     function = AtmFunction.new
 
     puts "Enter username to update: "
-    uname = gets.chomp
+    user = gets.chomp
     puts "Update new password: "
-    pass = gets.chomp
+    new_pass = gets.chomp.to_i
 
-    upd = [pass]
-    function.update_pass(uname, upd)
-    puts "succesfully changed password into #{pass}"
+    function.update_pass(user, new_pass)
+    puts "succesfully changed password into #{new_pass}"
   end
 
   def exiting
@@ -95,7 +91,6 @@ class ATMSystem
   end
 
 end
-
 
 start = ATMSystem.new
 start.log_menu
