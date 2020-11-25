@@ -6,7 +6,7 @@ class ATMSystem
   def log_menu
     puts "Welcome to ATM System"
     puts "1 - Login"
-    puts "2 - Exit"
+    puts "4 - Exit"
     input = gets.chomp
 
     case input
@@ -60,10 +60,10 @@ class ATMSystem
     function = AtmFunction.new
 
     puts "Enter the amount of deposit: "
-    deposit = gets.chomp
+    deposit = gets.chomp.to_i
 
     function.save_deposit(deposit)
-    puts "You have deposited RM#{deposit} into your account."
+  #  puts "You have deposited RM#{deposit} into your account."
   end
 
   def withdraw
@@ -77,12 +77,10 @@ class ATMSystem
   def update
     function = AtmFunction.new
 
-    puts "Enter username to update: "
-    user = gets.chomp
-    puts "Update new password: "
+    puts "Enter your new password: "
     new_pass = gets.chomp.to_i
 
-    function.update_pass(user, new_pass)
+    function.update_pass(new_pass)
     puts "succesfully changed password into #{new_pass}"
   end
 
